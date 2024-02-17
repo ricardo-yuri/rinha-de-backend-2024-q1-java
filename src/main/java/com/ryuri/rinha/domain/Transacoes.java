@@ -34,7 +34,7 @@ public class Transacoes {
     private String descricao;
 
     public static boolean isValid(Character tipo) {
-        return tipo == 'C' || tipo == 'D';
+        return tipo == 'c' || tipo == 'd';
     }
 
     public Long getId() {
