@@ -11,8 +11,12 @@ import com.ryuri.rinha.mapper.ClienteMapper;
 import com.ryuri.rinha.mapper.TransacoesMapper;
 import com.ryuri.rinha.repository.ClienteRepository;
 import com.ryuri.rinha.repository.ClienteSaldoRepository;
+import com.ryuri.rinha.repository.TransacoesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -25,23 +29,8 @@ public class ClienteService {
     @Autowired
     private ClienteSaldoRepository saldoRepository;
 
-//    public List<Cliente> inicializaClientes() {
-//        List<Cliente> list = new java.util.ArrayList<>(List.of());
-//        Cliente um = new Cliente("CLIENTE 01", 100000);
-//        Cliente dois = new Cliente("CLIENTE 02", 80000);
-//        Cliente tres = new Cliente("CLIENTE 03", 1000000);
-//        Cliente quatro = new Cliente("CLIENTE 04", 10000000);
-//        Cliente cinco = new Cliente("CLIENTE 05", 500000);
-//
-//        list.add(um);
-//        list.add(dois);
-//        list.add(tres);
-//        list.add(quatro);
-//        list.add(cinco);
-//
-//
-//        return repository.saveAllAndFlush(list);
-//    }
+    @Autowired
+    private TransacoesRepository transacoesRepository;
 
     public Cliente findById(Long id) {
         Optional<Cliente> optional = repository.findById(id);
@@ -60,10 +49,20 @@ public class ClienteService {
 
         Integer saldo = clienteSaldo.getSaldo();
 
-        if(transacao.getTipo() == 'c') {
-//           clienteSaldo.getSaldo() += transacao.getValor();
+        if(transacao.getTipo() == 'd' || transacao.getTipo() == 'D') {
+            if(clienteSaldo.getLimite() < saldo - transacao.getValor() || clienteSaldo.getLimite() + (saldo - transacao.getValor()) < 0) {
+                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
+            }
+            saldo -= transacao.getValor();
+        } else {
+            saldo += transacao.getValor();
         }
-        return new TransacoesResponse();
+
+        clienteSaldo.setSaldo(saldo);
+        ClienteSaldo saldoFinal = saldoRepository.save(clienteSaldo);
+        transacoesRepository.save(transacao);
+
+        return TransacoesResponse.valueOf(saldoFinal.getLimite(), saldoFinal.getSaldo());
 
     }
 
