@@ -8,8 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 
-import java.math.BigDecimal;
-
 @Entity
 public class Cliente {
 

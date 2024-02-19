@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ClienteSaldoRepository extends JpaRepository<ClienteSaldo, Long> {
 
     ClienteSaldo findByIdCliente(Long idCliente);
+
 }

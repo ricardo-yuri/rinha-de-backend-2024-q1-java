@@ -1,37 +1,47 @@
 package com.ryuri.rinha.domain;
 
-import jakarta.persistence.*;
-import jakarta.validation.ConstraintValidatorContext;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
+@JsonPropertyOrder({"valor, tipo, descricao, realizada_em"})
 public class Transacoes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     @NotNull
-    @Column(name = "id_cliente")
+    @JsonIgnore
     private Long idCliente;
 
     @NotNull
+    @JsonProperty("valor")
     private Integer valor;
 
-    @NotNull
-    private Instant dataTransacao = Instant.now();
-
+    @JsonProperty("tipo")
     private char tipo;
 
     @Length(min = 1, max = 10)
     @NotNull
     @NotBlank
+    @JsonProperty("descricao")
     private String descricao;
+
+    @NotNull
+    @JsonProperty("realizada_em")
+    private Instant dataTransacao = Instant.now();
 
     public static boolean isValid(Character tipo) {
         return tipo == 'c' || tipo == 'd';

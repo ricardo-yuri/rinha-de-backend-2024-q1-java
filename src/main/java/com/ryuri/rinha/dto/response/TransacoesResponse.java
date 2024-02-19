@@ -1,7 +1,5 @@
 package com.ryuri.rinha.dto.response;
 
-import java.math.BigInteger;
-
 public class TransacoesResponse {
 
     private Integer limite;

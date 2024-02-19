@@ -18,12 +18,6 @@ public abstract class TransacoesMapper {
 
     }
 
-    public static TransacoesResponse entityToTransacoesResponse(Transacoes transacoes) {
-        return TransacoesResponse.valueOf(transacoes.getValor(), transacoes.getValor());
-    }
-
-
-
     private static void validaSeTipoECreditoOuDebito(Character character) {
         if(!Transacoes.isValid(character)) {
             throw new TipoTransacoesException();
