@@ -4,7 +4,7 @@ import com.ryuri.rinha.domain.Cliente;
 import com.ryuri.rinha.domain.ClienteSaldo;
 import com.ryuri.rinha.dto.request.ClienteRequest;
 
-public class ClienteMapper {
+public abstract class ClienteMapper {
 
     public static Cliente toEntityCliente(ClienteRequest request) {
         return new Cliente(request.getNome());

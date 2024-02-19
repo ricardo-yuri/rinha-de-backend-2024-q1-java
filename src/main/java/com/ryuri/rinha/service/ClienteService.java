@@ -4,20 +4,23 @@ import com.ryuri.rinha.config.exception.ClienteNotFoundException;
 import com.ryuri.rinha.domain.Cliente;
 import com.ryuri.rinha.domain.ClienteSaldo;
 import com.ryuri.rinha.domain.Transacoes;
+import com.ryuri.rinha.dto.ExtratoDto;
 import com.ryuri.rinha.dto.request.ClienteRequest;
 import com.ryuri.rinha.dto.request.TransacoesRequest;
 import com.ryuri.rinha.dto.response.TransacoesResponse;
 import com.ryuri.rinha.mapper.ClienteMapper;
+import com.ryuri.rinha.mapper.ExtratoMapper;
 import com.ryuri.rinha.mapper.TransacoesMapper;
 import com.ryuri.rinha.repository.ClienteRepository;
 import com.ryuri.rinha.repository.ClienteSaldoRepository;
 import com.ryuri.rinha.repository.TransacoesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Limit;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -69,6 +72,16 @@ public class ClienteService {
     public ClienteSaldo cadastrarCliente(ClienteRequest request) {
         Cliente cliente = repository.save(ClienteMapper.toEntityCliente(request));
         return saldoRepository.save(ClienteMapper.toEntityClienteSaldo(request, cliente));
+    }
+
+    public ExtratoDto getExtrato(Long id) {
+        Cliente cliente = findById(id);
+        ClienteSaldo saldo = saldoRepository.findByIdCliente(cliente.getId());
+        List<Transacoes> transacoes = transacoesRepository.findByIdClienteOrderByDataTransacaoDesc(cliente.getId(), Limit.of(10));
+        ExtratoDto extratoDto = new ExtratoDto();
+        extratoDto.setSaldoDto(ExtratoMapper.saldoToDto(saldo));
+        extratoDto.setUltimasTransacoes(transacoes);
+        return extratoDto;
     }
 
 }
