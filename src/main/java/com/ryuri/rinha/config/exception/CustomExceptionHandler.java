@@ -18,14 +18,10 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   HttpHeaders headers,
                                                                   HttpStatusCode status,
                                                                   WebRequest request) {
-//        Map<String, String> errors = new HashMap<>();
-//        ex.getBindingResult().getAllErrors().forEach((error) -> {
-//            String fieldName = ((FieldError) error).getField();
-//            String errorMessage = error.getDefaultMessage();
-//            errors.put(fieldName, errorMessage);
-//        });
 
-        return new ResponseEntity<>(null, headers, status);
+        ApiErrorMessage apiErrorMessage = new ApiErrorMessage(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage());
+
+        return new ResponseEntity<>(null, headers, apiErrorMessage.getStatus());
     }
 
     @ExceptionHandler(ClienteNotFoundException.class)
@@ -41,7 +37,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleTipoTransacoesException(
             TipoTransacoesException exception, WebRequest request) {
 
-        ApiErrorMessage apiErrorMessage = new ApiErrorMessage(HttpStatus.FORBIDDEN, exception.getMessage());
+        ApiErrorMessage apiErrorMessage = new ApiErrorMessage(HttpStatus.UNPROCESSABLE_ENTITY, exception.getMessage());
 
         return new ResponseEntity<>(null, new HttpHeaders(), apiErrorMessage.getStatus());
     }

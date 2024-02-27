@@ -4,6 +4,7 @@ import com.ryuri.rinha.config.exception.TipoTransacoesException;
 import com.ryuri.rinha.domain.Transacoes;
 import com.ryuri.rinha.dto.request.TransacoesRequest;
 import com.ryuri.rinha.dto.response.TransacoesResponse;
+import com.zaxxer.hikari.util.SuspendResumeLock;
 
 public abstract class TransacoesMapper {
 
@@ -13,7 +14,7 @@ public abstract class TransacoesMapper {
         transacoes.setDescricao(request.getDescricao());
         transacoes.setTipo(request.getTipo());
         transacoes.setIdCliente(idCliente);
-        transacoes.setValor(request.getValor());
+        transacoes.setValor(Integer.parseInt(request.getValor().toString()));
         return transacoes;
 
     }
