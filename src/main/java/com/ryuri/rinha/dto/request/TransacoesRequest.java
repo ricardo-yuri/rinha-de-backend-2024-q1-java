@@ -1,13 +1,17 @@
 package com.ryuri.rinha.dto.request;
 
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
+import java.math.BigDecimal;
+
 public class TransacoesRequest {
 
     @NotNull
-    private Integer valor;
+    @Digits(integer = 10, fraction = 0)
+    private BigDecimal valor;
 
     @NotNull
     private Character tipo;
@@ -17,11 +21,11 @@ public class TransacoesRequest {
     @Length(min = 1, max = 10)
     private String descricao;
 
-    public Integer getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(Integer valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 

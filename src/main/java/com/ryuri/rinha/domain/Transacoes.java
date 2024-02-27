@@ -28,7 +28,7 @@ public class Transacoes {
 
     @NotNull
     @JsonProperty("valor")
-    private Integer valor;
+    private int valor;
 
     @JsonProperty("tipo")
     private char tipo;
@@ -63,11 +63,11 @@ public class Transacoes {
         this.idCliente = idCliente;
     }
 
-    public Integer getValor() {
+    public int getValor() {
         return valor;
     }
 
-    public void setValor(Integer valor) {
+    public void setValor(int valor) {
         this.valor = valor;
     }
 
