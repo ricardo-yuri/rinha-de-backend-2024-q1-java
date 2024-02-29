@@ -7,9 +7,8 @@ services:
     image: ricardoyuri/rinha-dev:latest
     hostname: api01
     environment:
-      - RINHA_DB_URL=jdbc:postgresql://db:5432/rinha
-      - RINHA_DB_USERNAME:admin
-      - RINHA_DB_PASSWORD:123
+      - DB_HOSTNAME=db
+
     # Não é necessário expor qualquer porta além da porta do load balancer,
     # mas é comum as pessoas o fazerem para testarem suas APIs e conectarem
     # ao banco de dados na fase de desenvolvimento.
@@ -28,9 +27,7 @@ services:
     <<: *api
     hostname: api02
     environment:
-      - RINHA_DB_URL=jdbc:postgresql://db:5432/rinha
-      - RINHA_DB_USERNAME:admin
-      - RINHA_DB_PASSWORD:123
+      - DB_HOSTNAME=db
     ports:
       - "8082:8080"
 
